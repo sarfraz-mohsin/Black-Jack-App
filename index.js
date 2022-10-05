@@ -1,23 +1,83 @@
-let firstCard = 5
-let secondCard = 8
+let cards = []
 
-let sum = firstCard + secondCard
+let sum = 0
 let hasBlackJack = false;
-let isAlive = true;
+let isAlive = false;
+let message = '';
 
-if(sum <21){
-    console.log('Do you want to draw a card ?');
+let messageEl = document.getElementById('message-el')
+let sumEl = document.getElementById('sum-el')
+let cardsEl = document.getElementById('cards-el');
+let playerEl = document.getElementById('player-el')
+
+let player = {
+    name: 'Sarfraz',
+    chips: '150'
 }
 
-else if(sum ===21){
-    console.log('You have won the game');
-    hasBlackJack = true;
+playerEl.textContent = player.name + ': $' + player.chips
+
+function getRandonCard(){
+    
+    let randomNumber = Math.floor( Math.random()*13 ) + 1;
+    
+    if(randomNumber === 1){
+        randomNumber = 11;
+    }
+    else if(randomNumber > 10){
+        randomNumber = 10;
+    }
+    else{
+        randomNumber;
+    }
+
+    return randomNumber;
+
 }
 
-else{
-    console.log('You have lost the game')
-    isAlive = false;
+function startGame(){
+    let firstCard = getRandonCard();
+    let secondCard = getRandonCard();
+    isAlive= true;
+
+    sum= firstCard + secondCard;
+    cards = [firstCard, secondCard];
+
+    renderGame();
 }
 
-console.log(isAlive)
-console.log(hasBlackJack)
+function renderGame(){
+
+    cardsEl.textContent = 'Cards: ';
+    for(let i=0; i<cards.length; i++){
+        cardsEl.textContent += cards[i]+ ' ';
+    }
+
+    sumEl.textContent = 'Sum: ' + sum;
+
+    if(sum <21){
+        message ='Do you want to draw a card ?' 
+    }
+
+    else if(sum ===21){
+        message = 'You have won the game'
+        hasBlackJack = true;
+    }
+
+    else{
+        message = 'You have lost the game'
+        isAlive = false;
+    }
+
+    messageEl.textContent = message;
+
+}
+
+function newCard(){
+    if(isAlive === true && hasBlackJack=== false){
+    let card = getRandonCard();
+    sum += card;
+    cards.push(card);
+    renderGame(); 
+    }
+}
